@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>tVote - Sign Up</title>
+    <style>
+        /* General styles */
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background: #333;
+            color: #fff;
+            width: 100%;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        header .logo img {
+            height: 50px;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        nav ul li {
+            margin: 0 1rem;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            width: 100%;
+        }
+
+        .form-container {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #555;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="date"],
+        input[type="password"],
+        select {
+            width: calc(100% - 1rem);
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 0.5rem 1rem;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-size: 1rem;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        footer {
+            background: #333;
+            color: #fff;
+            width: 100%;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        footer a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="logot.jpg" alt="tVote Logo">
+            <h1>tVote</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="login.html">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <div class="form-container">
+            <h2>Sign Up</h2>
+            <form id="signup-form" action="signup.php" method="post" onsubmit="return validateForm()">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required pattern="[A-Za-z_]{8,}">
+
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="whatsapp">WhatsApp Number</label>
+                <div style="display: flex; align-items: center;">
+                    <select id="country-code" name="country_code" required style="width: 100px; margin-right: 10px;">
+                        <option value="+237">Cameroon (+237)</option>
+                        <option value="+234">Nigeria (+234)</option>
+                        <option value="+235">Chad (+235)</option>
+                        <option value="+225">Ivory Coast (+225)</option>
+                        <option value="+233">Ghana (+233)</option>
+                        <option value="+241">Gabon (+241)</option>
+                        <option value="+27">South Africa (+27)</option>
+                        <option value="+228">Togo (+228)</option>
+                        <option value="+229">Benin (+229)</option>
+                        <option value="+221">Senegal (+221)</option>
+                        <option value="+236">Central African Republic (+236)</option>
+                        <option value="+240">Equatorial Guinea (+240)</option>
+                        <option value="+243">RDC (+243)</option>
+                        <option value="+33">France (+33)</option>
+                        <option value="+1">USA (+1)</option>
+                        <option value="+32">Belgium (+32)</option>
+                        <option value="+1">Canada (+1)</option>
+                        <option value="+86">China (+86)</option>
+                        <option value="+44">England (UK) (+44)</option>
+                        <option value="+41">Switzerland (+41)</option>
+                        <option value="+255">Tanzania (+255)</option>
+                        <option value="+91">India (+91)</option>
+                        <!-- Add more country codes as needed -->
+                    </select>
+                    <input type="tel" id="whatsapp" name="whatsapp" required placeholder="Enter phone number">
+                </div>
+
+                <label for="dob">Date of Birth</label>
+                <input type="date" id="dob" name="dob" required min="1960-01-01" max="2014-12-31" onchange="updateAge()">
+                <span id="age">Age: </span>
+
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required minlength="8">
+
+                <button type="submit">Sign Up</button>
+            </form>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2024 tVote. All rights reserved.</p>
+        <p>Location: Douala, Cameroon</p>
+        
+    </footer>
+    <script>
+        function validateForm() {
+            var countryCode = document.getElementById("country-code").value;
+            var whatsapp = document.getElementById("whatsapp").value;
+
+            const countryValidationRules = {
+                "+237": { length: 9, start: "6", message: "For Cameroon, WhatsApp number must be 9 digits long and start with 6." },
+                "+234": { length: 10, start: "", message: "For Nigeria, WhatsApp number must be 10 digits long." },
+                "+235": { length: 8, start: "", message: "For Chad, WhatsApp number must be 8 digits long." },
+                "+225": { length: 8, start: "", message: "For Ivory Coast, WhatsApp number must be 8 digits long." },
+                "+233": { length: 9, start: "", message: "For Ghana, WhatsApp number must be 9 digits long." },
+                "+241": { length: 7, start: "", message: "For Gabon, WhatsApp number must be 7 digits long." },
+                "+27": { length: 9, start: "", message: "For South Africa, WhatsApp number must be 9 digits long." },
+                "+228": { length: 8, start: "", message: "For Togo, WhatsApp number must be 8 digits long." },
+                "+229": { length: 8, start: "", message: "For Benin, WhatsApp number must be 8 digits long." },
+                "+221": { length: 9, start: "", message: "For Senegal, WhatsApp number must be 9 digits long." },
+                "+236": { length: 8, start: "", message: "For Central African Republic, WhatsApp number must be 8 digits long." },
+                "+240": { length: 9, start: "", message: "For Equatorial Guinea, WhatsApp number must be 9 digits long." },
+                "+243": { length: 9, start: "", message: "For RDC, WhatsApp number must be 9 digits long." },
+                "+33": { length: 9, start: "", message: "For France, WhatsApp number must be 9 digits long." },
+                "+1": { length: 10, start: "", message: "For USA and Canada, WhatsApp number must be 10 digits long." },
+                "+32": { length: 9, start: "", message: "For Belgium, WhatsApp number must be 9 digits long." },
+                "+86": { length: 11, start: "", message: "For China, WhatsApp number must be 11 digits long." },
+                "+44": { length: 10, start: "", message: "For England (UK), WhatsApp number must be 10 digits long." },
+                "+41": { length: 9, start: "", message: "For Switzerland, WhatsApp number must be 9 digits long." },
+                "+255": { length: 9, start: "", message: "For Tanzania, WhatsApp number must be 9 digits long." },
+                "+91": { length: 10, start: "", message: "For India, WhatsApp number must be 10 digits long." }
+                // Add more country codes and their respective rules if needed
+            };
+
+            const rule = countryValidationRules[countryCode];
+            if (rule) {
+                const lengthValid = whatsapp.length === rule.length;
+                const startValid = rule.start ? whatsapp.startsWith(rule.start) : true;
+
+                if (!lengthValid || !startValid) {
+                    alert(rule.message);
+                    return false;
+                }
+            } else {
+                alert("Invalid country code.");
+                return false;
+            }
+
+            return true;
+        }
+
+        function updateAge() {
+            const dob = document.getElementById("dob").value;
+            if (dob) {
+                const dobDate = new Date(dob);
+                const today = new Date();
+                let age = today.getFullYear() - dobDate.getFullYear();
+                const monthDiff = today.getMonth() - dobDate.getMonth();
+                if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dobDate.getDate())) {
+                    age--;
+                }
+                document.getElementById("age").innerText = `Age: ${age}`;
+            } else {
+                document.getElementById("age").innerText = "Age: ";
+            }
+        }
+    </script>
+</body>
+</html>

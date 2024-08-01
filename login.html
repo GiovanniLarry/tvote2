@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>tVote - Login</title>
+    <style>
+        
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Ensure the body takes the full height of the viewport */
+html, body {
+    height: 100%;
+    font-family: Arial, sans-serif;
+}
+
+/* Flexbox layout for centering content */
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header styling */
+header {
+    background: #333;
+    color: #fff;
+    padding: 1rem;
+    text-align: center;
+}
+
+header .logo img {
+    height: 50px;
+}
+header .logo img {
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+            border-radius: 50%; /* Makes the logo circular */
+            background-color: transparent; /* Ensures background is transparent */
+        }
+
+
+/* Navigation styling */
+nav ul {
+    list-style-type: none;
+}
+
+nav ul li {
+    display: inline;
+    margin: 0 10px;
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+}
+
+/* Main content styling */
+main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    background-color: #f4f4f4;
+}
+
+.form-container {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+}
+
+/* Form styling */
+form label {
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+form input[type="text"],
+form input[type="password"],
+form input[type="tel"],
+form input[type="date"],
+form input[type="email"] {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+form button {
+    padding: 0.75rem;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+}
+
+form button:hover {
+    background-color: #0056b3;
+}
+
+/* Footer styling */
+footer {
+    background: #333;
+    color: #fff;
+    padding: 1rem;
+    text-align: center;
+}
+
+.password-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-container input[type="password"] {
+    width: 100%;
+    padding-right: 40px; /* Space for the eye icon */
+}
+
+.password-container .eye-icon {
+    position: absolute;
+    right: 10px;
+    cursor: pointer;
+    font-size: 18px;
+}
+        .error {
+            color: red;
+            margin-bottom: 1rem;
+        }
+        /* Your existing styles */
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="images/logot.jpg" alt="tVote Logo">
+            <h1>tVote</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="contact.html">Contact Us</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="signup.html">Sign Up</a></li>
+                
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <div class="form-container">
+            <h2>Login</h2>
+            <form action="login.php" method="post">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required placeholder="Enter your username">
+                
+                <label for="password">Password</label>
+                <div class="password-container">
+                    <input type="password" id="password" name="password" required>
+                    <span class="eye-icon" onclick="togglePassword()">👁️</span>
+                </div>
+                
+                <?php if (isset($_GET['error'])): ?>
+                    <p class="error">
+                        <?php
+                        if ($_GET['error'] === 'invalid_password') {
+                            echo 'Invalid password.';
+                        } elseif ($_GET['error'] === 'no_user') {
+                            echo 'No user found with that username.';
+                        }
+                        ?>
+                    </p>
+                <?php endif; ?>
+
+                <button type="submit">Login</button>
+            </form>
+            <p>Not yet signed up? <a href="signup.html">Sign Up</a></p>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2024 tVote. All rights reserved.</p>
+        <p>Location: Douala, Cameroon</p>
+        
+    </footer>
+    <script>
+        function togglePassword() {
+            var passwordField = document.getElementById('password');
+            var eyeIcon = document.querySelector('.eye-icon');
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+                eyeIcon.textContent = '🙈';
+            } else {
+                passwordField.type = 'password';
+                eyeIcon.textContent = '👁️';
+            }
+        }
+    </script>
+</body>
+</html>

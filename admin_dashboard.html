@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - tVote</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            min-height: 100vh;
+            color: #333;
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            width: 250px;
+            background-color: #333;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100%;
+            padding: 20px;
+        }
+
+        .sidebar .logo {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            margin: 20px 0;
+        }
+
+        .sidebar ul li a {
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .sidebar ul li a i {
+            margin-right: 10px;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+            width: calc(100% - 250px);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #fff;
+            padding: 10px 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .header .welcome {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .header .logout {
+            background-color: #ff4d4d;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .cards {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+
+        .card {
+            background-color: #fff;
+            width: 30%;
+            margin: 10px;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .card h3 {
+            margin-bottom: 20px;
+        }
+
+        .card p {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .table-container {
+            margin: 20px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        table th, table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        table th {
+            background-color: #333;
+            color: #fff;
+        }
+
+        .add-button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        .add-button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            width: 80%;
+            max-width: 500px;
+        }
+
+        .modal-content h3 {
+            margin-bottom: 20px;
+        }
+
+        .modal-content label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+
+        .modal-content input, .modal-content textarea, .modal-content select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .modal-content .close-button {
+            background-color: #ff4d4d;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            float: right;
+        }
+
+        .modal-content .submit-button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .modal-content .submit-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="logo">tVote Admin</div>
+        <ul>
+            <li><a href="#dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+            <li><a href="#manage-users"><i class="fas fa-users"></i> Manage Users</a></li>
+            <li><a href="#manage-votes"><i class="fas fa-vote-yea"></i> Manage Votes</a></li>
+            <li><a href="#analytics"><i class="fas fa-chart-line"></i> Analytics</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Header -->
+        <div class="header">
+            <div class="welcome">Welcome, Admin</div>
+            <a href="logout.html" class="logout">logout</a>
+        </div>
+
+        <!-- Dashboard Section -->
+        <section id="dashboard">
+            <div class="cards">
+                <div class="card">
+                    <h3>Total Users</h3>
+                    <p id="total-users">Loading...</p>
+                </div>
+                <div class="card">
+                    <h3>Total Votes</h3>
+                    <p id="total-votes">Loading...</p>
+                </div>
+                <div class="card">
+                    <h3>Active Votes</h3>
+                    <p id="active-votes">Loading...</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Manage Users Section -->
+        <section id="manage-users">
+            <h2>Manage Users</h2>
+            <button class="add-button" onclick="openModal('user-modal')">Add User</button>
+            <div class="table-container">
+                <table id="user-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>WhatsApp</th>
+                            <th>Country Code</th>
+                            <th>Date of Birth</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Dynamic User Rows Here -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Manage Votes Section -->
+        <section id="manage-votes">
+            <h2>Manage Votes</h2>
+            <button class="add-button" onclick="openModal('vote-modal')">Add Vote</button>
+            <div class="table-container">
+                <h3>Current Votes</h3>
+                <table id="vote-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Title</th>
+                            <th>Description</th>
+                            <th>Begin Time</th>
+                            <th>End Time</th>
+                            <th>Result Time</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Dynamic Vote Rows Here -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Analytics Section -->
+        <section id="analytics">
+            <h2>Analytics</h2>
+            <p>Analytics data will be displayed here.</p>
+        </section>
+    </div>
+
+    <!-- User Modal -->
+    <div id="user-modal" class="modal">
+        <div class="modal-content">
+            <button class="close-button" onclick="closeModal('user-modal')">&times;</button>
+            <h3>Add User</h3>
+            <form id="user-form">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+                
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+                
+                <label for="whatsapp">WhatsApp:</label>
+                <input type="text" id="whatsapp" name="whatsapp">
+                
+                <label for="country_code">Country Code:</label>
+                <input type="text" id="country_code" name="country_code">
+                
+                <label for="dob">Date of Birth:</label>
+                <input type="date" id="dob" name="dob">
+                
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+                
+                <button type="submit" class="submit-button">Add User</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Vote Modal -->
+    <div id="vote-modal" class="modal">
+        <div class="modal-content">
+            <button class="close-button" onclick="closeModal('vote-modal')">&times;</button>
+            <h3>Add Vote</h3>
+            <form id="vote-form">
+                <label for="vote-title">Vote Title:</label>
+                <input type="text" id="vote-title" name="vote-title" required>
+                
+                <label for="vote-description">Vote Description:</label>
+                <textarea id="vote-description" name="vote-description" required></textarea>
+                
+                <label for="begin-date">Begin Date:</label>
+                <input type="date" id="begin-date" name="begin-date" required>
+                
+                <label for="begin-time">Begin Time:</label>
+                <input type="time" id="begin-time" name="begin-time" required>
+                
+                <label for="end-date">End Date:</label>
+                <input type="date" id="end-date" name="end-date" required>
+                
+                <label for="end-time">End Time:</label>
+                <input type="time" id="end-time" name="end-time" required>
+                
+                <label for="result-date">Result Date:</label>
+                <input type="date" id="result-date" name="result-date" required>
+                
+                <label for="result-time">Result Time:</label>
+                <input type="time" id="result-time" name="result-time" required>
+                
+                <label for="referral-code">Referral Code:</label>
+                <input type="text" id="referral-code" name="referral-code" required>
+                
+                <button type="submit" class="submit-button">Add Vote</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript to handle opening and closing of modals
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'flex';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        // Fetch and update dashboard and table data
+        async function updateDashboard() {
+            try {
+                const response = await fetch('fetch_dashboard_data.php');
+                const data = await response.json();
+
+                document.getElementById('total-users').textContent = data.totalUsers || '0';
+                document.getElementById('total-votes').textContent = data.totalVotes || '0';
+                document.getElementById('active-votes').textContent = data.activeVotes || '0';
+
+                // Update user table
+                const userTableBody = document.querySelector('#user-table tbody');
+                userTableBody.innerHTML = '';
+                data.users.forEach(user => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${user.id}</td>
+                        <td>${user.username}</td>
+                        <td>${user.email}</td>
+                        <td>${user.whatsapp}</td>
+                        <td>${user.country_code}</td>
+                        <td>${user.dob}</td>
+                        <td>
+                            <button class="edit-button" onclick="editUser(${user.id})">Edit</button>
+                            <button class="delete-button" onclick="deleteUser(${user.id})">Delete</button>
+                        </td>
+                    `;
+                    userTableBody.appendChild(row);
+                });
+
+                // Update vote table
+                const voteTableBody = document.querySelector('#vote-table tbody');
+                voteTableBody.innerHTML = '';
+                data.votes.forEach(vote => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${vote.id}</td>
+                        <td>${vote.title}</td>
+                        <td>${vote.description}</td>
+                        <td>${vote.begin_time}</td>
+                        <td>${vote.end_time}</td>
+                        <td>${vote.result_time}</td>
+                        <td>
+                            <button class="edit-button" onclick="editVote(${vote.id})">Edit</button>
+                            <button class="delete-button" onclick="deleteVote(${vote.id})">Delete</button>
+                        </td>
+                    `;
+                    voteTableBody.appendChild(row);
+                });
+            } catch (error) {
+                console.error('Error fetching dashboard data:', error);
+                document.getElementById('total-users').textContent = 'Error';
+                document.getElementById('total-votes').textContent = 'Error';
+                document.getElementById('active-votes').textContent = 'Error';
+            }
+        }
+
+        // Call the function to update dashboard on page load
+        document.addEventListener('DOMContentLoaded', updateDashboard);
+
+        function editUser(userId) {
+            // Add code to edit user
+        }
+
+        function deleteUser(userId) {
+            // Add code to delete user
+        }
+
+        function editVote(voteId) {
+            // Add code to edit vote
+        }
+
+        function deleteVote(voteId) {
+            // Add code to delete vote
+        }
+    </script>
+</body>
+</html>
